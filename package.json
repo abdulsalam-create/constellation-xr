@@ -1,0 +1,59 @@
+{
+  "name": "constellation-xr",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Immersive force-directed graph explorer for WebXR. Barnes-Hut N-body layout in a Web Worker, instanced rendering, room-scale locomotion.",
+  "keywords": [
+    "webxr",
+    "three.js",
+    "vr",
+    "graph-visualization",
+    "force-directed",
+    "barnes-hut",
+    "data-visualization",
+    "webgl",
+    "typescript"
+  ],
+  "homepage": "https://abdulsalam-create.github.io/constellation-xr/",
+  "bugs": {
+    "url": "https://github.com/abdulsalam-create/constellation-xr/issues"
+  },
+  "license": "MIT",
+  "author": "Abdulsalam A",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdulsalam-create/constellation-xr.git"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "bench": "vitest bench --run"
+  },
+  "dependencies": {
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/three": "^0.186.0",
+    "@vitest/coverage-v8": "^5.0.1",
+    "eslint": "^10.10.0",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  }
+}

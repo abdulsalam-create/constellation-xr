@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Constellation XR — immersive graph explorer</title>
+    <meta
+      name="description"
+      content="Explore force-directed graphs in VR. Barnes-Hut N-body layout in a Web Worker, instanced rendering, teleport locomotion."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #e8ecf6;
+        --muted: #93a0bd;
+        --panel: rgba(12, 17, 30, 0.82);
+        --line: rgba(142, 163, 196, 0.22);
+        --accent: #e8c56a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #080b14;
+        color: var(--ink);
+        font:
+          14px/1.5 ui-sans-serif,
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+      }
+      #viewport {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        touch-action: none;
+      }
+      #overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .panel {
+        pointer-events: auto;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 14px;
+        backdrop-filter: blur(8px);
+        max-width: min(460px, calc(100vw - 32px));
+      }
+      h1 {
+        margin: 0 0 2px;
+        font-size: 15px;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+      .tagline {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      [data-hud-stats],
+      [data-hud-status] {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+        font-size: 12px;
+        margin: 8px 0 0;
+      }
+      [data-hud-detail] {
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      [data-hud-detail][data-active] {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      button {
+        font: inherit;
+        font-size: 13px;
+        color: var(--ink);
+        background: rgba(232, 197, 106, 0.12);
+        border: 1px solid rgba(232, 197, 106, 0.4);
+        border-radius: 7px;
+        padding: 7px 13px;
+        cursor: pointer;
+      }
+      button:hover:not(:disabled) {
+        background: rgba(232, 197, 106, 0.2);
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+        border-color: var(--line);
+        background: transparent;
+      }
+      .legend {
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .legend li + li {
+        margin-top: 2px;
+      }
+      kbd {
+        font: inherit;
+        font-size: 11px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 0 4px;
+        color: var(--ink);
+      }
+      body[data-dragging] #overlay::after {
+        content: 'Drop a graph JSON file to load it';
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: rgba(8, 11, 20, 0.7);
+        border: 2px dashed var(--accent);
+        font-size: 16px;
+      }
+      @media (max-width: 520px) {
+        .tagline,
+        .legend {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="viewport"></canvas>
+    <div id="overlay">
+      <div class="panel">
+        <h1>Constellation XR</h1>
+        <p class="tagline">
+          Force-directed graph explorer. Barnes&ndash;Hut N-body layout running in a Web Worker.
+        </p>
+        <p data-hud-stats>Loading&hellip;</p>
+        <p data-hud-detail>Nothing selected</p>
+        <div class="controls">
+          <button id="enter-xr" type="button" disabled>Checking for a VR device&hellip;</button>
+          <button id="reheat" type="button">Reheat layout</button>
+        </div>
+      </div>
+      <div class="panel">
+        <ul class="legend">
+          <li>
+            <strong>Desktop</strong> &mdash; drag to orbit, scroll to zoom, click a node to select
+          </li>
+          <li>
+            <strong>VR</strong> &mdash; trigger to select or teleport, grip to grab a node,
+            thumbstick to snap-turn
+          </li>
+          <li>Drop a <kbd>{ nodes, edges }</kbd> JSON file anywhere to load your own graph</li>
+        </ul>
+        <p data-hud-status>Initialising</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
