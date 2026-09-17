@@ -4,8 +4,6 @@
 runs a Barnes–Hut N-body layout in a Web Worker, renders the whole graph in two
 draw calls, and works in a headset or in a plain browser tab.
 
-[![CI](https://github.com/abdulsalam-create/constellation-xr/actions/workflows/ci.yml/badge.svg)](https://github.com/abdulsalam-create/constellation-xr/actions/workflows/ci.yml)
-[![Pages](https://github.com/abdulsalam-create/constellation-xr/actions/workflows/deploy.yml/badge.svg)](https://github.com/abdulsalam-create/constellation-xr/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)
 
