@@ -7,8 +7,6 @@ draw calls, and works in a headset or in a plain browser tab.
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)
 
-
-
 ---
 
 ## Why this exists
@@ -21,7 +19,7 @@ walking along it.
 
 The interesting part is not the VR. It is that a force-directed layout is an
 N-body problem, an N-body problem is `O(n²)`, and a headset renders at 72–120 Hz
-  roughly 11 ms per frame at 90 Hz   before the compositor starts reprojecting
+roughly 11 ms per frame at 90 Hz before the compositor starts reprojecting
 and the user starts feeling ill.
 
 Measured on a modest cloud container (Node 22, single thread, 40 steps after
@@ -40,7 +38,7 @@ speedup.** That is the whole point of the octree, and it is what moves the
 interactive ceiling from a few hundred nodes to a few thousand.
 
 Two honest caveats. First, a single step fits the 11 ms frame budget up to
-roughly 2,500 nodes on this hardware, not 5,000   and a standalone headset CPU
+roughly 2,500 nodes on this hardware, not 5,000 and a standalone headset CPU
 is slower than this container, not faster. Second, it does not actually have to
 fit: the simulation runs in a Web Worker, so beyond that point the layout
 converges over more wall-clock time while the render thread keeps its frame rate.
@@ -62,7 +60,7 @@ What you lose past ~2,500 nodes is settling speed, not smoothness.
 `s` seen from distance `d` is collapsed to its centre of mass whenever
 `s / d < θ`. That takes the repulsion term from `O(n²)` to `O(n log n)`. The tree
 is a struct-of-arrays over a growable pool with per-leaf linked lists, so
-rebuilding it every step allocates nothing after warm-up   a GC pause is a
+rebuilding it every step allocates nothing after warm-up a GC pause is a
 dropped frame, and a dropped frame in a headset is nausea. Centres of mass are
 computed in a single reverse sweep over the cell pool, exploiting the fact that a
 child always has a higher pool index than its parent, so no recursion and no
@@ -85,7 +83,7 @@ movement. Smooth locomotion induces motion sickness in a substantial minority of
 people, so the comfortable option is the only option rather than a setting buried
 in a menu. The teleport arc is real ballistics, so the landing point is
 predictable, and teleporting moves the _player rig_ with the head's offset inside
-the play space subtracted   otherwise a user standing in the corner of their room
+the play space subtracted otherwise a user standing in the corner of their room
 arrives somewhere other than where they aimed.
 
 **Aim assist that scales with distance.** Controller picking scores candidates by
@@ -131,7 +129,7 @@ Drop a JSON file onto the page. The format is deliberately plain:
 ```
 
 `label`, `group` and `weight` are optional. Validation is strict and reports a
-precise path   `edges[12].target: references unknown node "ghost"`   because a
+precise path `edges[12].target: references unknown node "ghost"` because a
 dropped file is untrusted input and the failure you want is a message, not a
 blank screen. Self-loops and duplicate edges are dropped; neither contributes
 anything to the layout and both cost a spring evaluation every step.
@@ -149,7 +147,7 @@ makes it testable in plain Node. Two tests are worth calling out:
   vector of `(0, 0, 0)`, so softening keeps the force finite but leaves it
   pointing nowhere and the nodes stay welded together forever. The substitute
   displacement is deterministic (layouts stay reproducible) _and_ antisymmetric
-  in the index pair   if it were not, every coincident pair would leak momentum
+  in the index pair if it were not, every coincident pair would leak momentum
   and the whole graph would slowly drift off into space. Both properties have
   tests.
 
@@ -159,7 +157,7 @@ Test Files  8 passed (8)
 Coverage    97% statements, 99% functions
 ```
 
-Coverage is scoped to `src/core/**`   the simulation, which is where the
+Coverage is scoped to `src/core/**` the simulation, which is where the
 algorithms that can be wrong live. The renderer, the worker, the XR input layer
 and `main.ts` are not unit tested: they need a WebGL context and a headset, and
 a mocked `XRSession` would test the mock. That is a real gap, not an oversight.
@@ -200,9 +198,9 @@ tests/         unit tests for everything in core/
 
 - Barnes, J. & Hut, P. (1986). [A hierarchical O(N log N) force-calculation algorithm](https://www.nature.com/articles/324446a0). _Nature_ 324, 446–449.
 - Fruchterman, T. & Reingold, E. (1991). Graph drawing by force-directed placement. _Software: Practice and Experience_ 21(11).
-- Ottosson, B. (2020). [A perceptual color space for image processing](https://bottosson.github.io/posts/oklab/)   the OKLCH basis used for categorical node colours.
-- [WebXR Device API](https://www.w3.org/TR/webxr/)   W3C.
+- Ottosson, B. (2020). [A perceptual color space for image processing](https://bottosson.github.io/posts/oklab/) the OKLCH basis used for categorical node colours.
+- [WebXR Device API](https://www.w3.org/TR/webxr/) W3C.
 
 ## License
 
-MIT   see [LICENSE](LICENSE).
+MIT see [LICENSE](LICENSE).
